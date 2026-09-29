@@ -1,12 +1,11 @@
 :root {
-  --navy: #0b2345;
-  --navy-dark: #071a33;
-  --navy-soft: #173b68;
+  --black: #1c1d22;
   --white: #ffffff;
-  --surface: #f6f8fb;
-  --border: #dbe2ea;
-  --text: #142033;
-  --muted: #64748b;
+  --surface: #f7f7f6;
+  --gray: #a3a19e;
+  --gray-dark: #666361;
+  --yellow: #fed03b;
+  --yellow-soft: #f1e2ae;
 }
 
 * {
@@ -21,7 +20,7 @@ body {
 
 body {
   background: var(--surface);
-  color: var(--text);
+  color: var(--black);
   font-family: Arial, Helvetica, sans-serif;
 }
 
@@ -34,8 +33,9 @@ body {
   align-items: center;
   justify-content: space-between;
   padding: 18px 6vw;
-  background: var(--navy-dark);
-  color: var(--white);
+  background: var(--white);
+  color: var(--black);
+  border-bottom: 1px solid var(--gray);
 }
 
 .brand {
@@ -49,20 +49,23 @@ body {
   width: 42px;
   height: 42px;
   place-items: center;
-  border: 1px solid rgba(255, 255, 255, 0.35);
+  border: 1px solid var(--black);
   border-radius: 10px;
+  color: var(--black);
+  background: var(--white);
   font-weight: 800;
   letter-spacing: 0.08em;
 }
 
 .brand h1 {
   margin: 0;
+  color: var(--black);
   font-size: 17px;
 }
 
 .brand p {
   margin: 3px 0 0;
-  color: #cbd5e1;
+  color: var(--gray-dark);
   font-size: 12px;
 }
 
@@ -70,7 +73,7 @@ body {
   display: flex;
   align-items: center;
   gap: 8px;
-  color: #dbeafe;
+  color: var(--gray-dark);
   font-size: 13px;
 }
 
@@ -78,7 +81,7 @@ body {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: #22c55e;
+  background: var(--yellow);
 }
 
 .hero {
@@ -89,7 +92,7 @@ body {
 
 .eyebrow,
 .cardLabel {
-  color: var(--navy-soft);
+  color: var(--black);
   font-size: 11px;
   font-weight: 800;
   letter-spacing: 0.12em;
@@ -98,7 +101,7 @@ body {
 .hero h2 {
   max-width: 850px;
   margin: 12px 0 18px;
-  color: var(--navy);
+  color: var(--black);
   font-size: clamp(38px, 6vw, 68px);
   line-height: 0.98;
   letter-spacing: -0.045em;
@@ -107,7 +110,7 @@ body {
 .hero p {
   max-width: 760px;
   margin: 0;
-  color: var(--muted);
+  color: var(--gray-dark);
   font-size: 18px;
   line-height: 1.7;
 }
@@ -125,19 +128,19 @@ body {
   min-height: 210px;
   padding: 28px;
   background: var(--white);
-  border: 1px solid var(--border);
+  border: 1px solid var(--gray);
   border-radius: 14px;
 }
 
 .card h3 {
   margin: 16px 0 10px;
-  color: var(--navy);
+  color: var(--black);
   font-size: 21px;
 }
 
 .card p {
   margin: 0;
-  color: var(--muted);
+  color: var(--gray-dark);
   line-height: 1.65;
 }
 
@@ -146,8 +149,8 @@ footer {
   justify-content: space-between;
   gap: 20px;
   padding: 18px 6vw;
-  border-top: 1px solid var(--border);
-  color: var(--muted);
+  border-top: 1px solid var(--gray);
+  color: var(--gray-dark);
   font-size: 12px;
 }
 
