@@ -2,7 +2,11 @@ import httpx
 from sqlalchemy import create_engine, select
 from sqlalchemy.orm import Session
 
-from app.collection.http_fetcher import FetchLimits, FetchResult
+from app.collection.http_fetcher import (
+    CollectionDeadlineExceededError,
+    FetchLimits,
+    FetchResult,
+)
 from app.collection.orchestrator import collect_source
 from app.db_base import APP_SCHEMA, Base
 from app.models.collection_attempt import CollectionAttempt
@@ -195,6 +199,40 @@ def test_unsupported_collector_type_fails_before_fetch(
         assert attempts[0].status == "failed"
         assert attempts[0].completed_at is not None
         assert attempts[0].failure_code == "unsupported_collector_type"
+
+
+
+def test_collection_deadline_failure_is_persisted(
+    monkeypatch,
+) -> None:
+    def fake_fetch_url(url: str, *, limits: FetchLimits) -> FetchResult:
+        raise CollectionDeadlineExceededError("deadline exceeded")
+
+    monkeypatch.setattr(
+        "app.collection.orchestrator.fetch_url",
+        fake_fetch_url,
+    )
+
+    with build_session() as db:
+        source = create_source(db)
+
+        try:
+            collect_source(
+                db,
+                source=source,
+                limits=build_limits(),
+            )
+        except CollectionDeadlineExceededError:
+            pass
+        else:
+            raise AssertionError("Expected CollectionDeadlineExceededError.")
+
+        attempts = list(db.scalars(select(CollectionAttempt)))
+
+        assert len(attempts) == 1
+        assert attempts[0].status == "failed"
+        assert attempts[0].completed_at is not None
+        assert attempts[0].failure_code == "collection_deadline_exceeded"
 
 
 def test_duplicate_collection_reuses_existing_evidence(

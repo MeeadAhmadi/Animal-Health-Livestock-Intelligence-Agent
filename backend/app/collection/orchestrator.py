@@ -7,6 +7,7 @@ import httpx
 from sqlalchemy.orm import Session
 
 from app.collection.http_fetcher import (
+    CollectionDeadlineExceededError,
     FetchLimits,
     HttpStatusError,
     RedirectLocationError,
@@ -52,6 +53,9 @@ def _failure_code(exc: Exception) -> str:
 
     if isinstance(exc, ResponseTooLargeError):
         return "response_too_large"
+
+    if isinstance(exc, CollectionDeadlineExceededError):
+        return "collection_deadline_exceeded"
 
     if isinstance(exc, RedirectLocationError):
         return "invalid_redirect"

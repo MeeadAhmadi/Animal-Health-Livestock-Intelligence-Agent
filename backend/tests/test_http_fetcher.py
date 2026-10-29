@@ -4,6 +4,7 @@ import httpx
 import pytest
 
 from app.collection.http_fetcher import (
+    CollectionDeadlineExceededError,
     FetchLimits,
     HttpStatusError,
     RedirectLocationError,
@@ -220,3 +221,47 @@ def test_rejects_non_success_status(
 
     with pytest.raises(HttpStatusError):
         fetch_url("https://example.com/outage", limits=limits)
+
+
+
+def test_total_deadline_stops_slow_drip_stream(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    clock = {"now": 0.0}
+
+    def fake_monotonic() -> float:
+        return clock["now"]
+
+    class SlowDripStream(httpx.SyncByteStream):
+        def __iter__(self):
+            clock["now"] += 0.6
+            yield b"a"
+
+            clock["now"] += 0.6
+            yield b"b"
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        return httpx.Response(
+            200,
+            stream=SlowDripStream(),
+        )
+
+    monkeypatch.setattr(
+        "app.collection.http_fetcher.time.monotonic",
+        fake_monotonic,
+    )
+    install_mock_transport(monkeypatch, handler)
+
+    limits = FetchLimits(
+        connect_timeout_seconds=2.0,
+        read_timeout_seconds=2.0,
+        total_timeout_seconds=1.0,
+        max_redirects=2,
+        max_response_bytes=1024,
+    )
+
+    with pytest.raises(CollectionDeadlineExceededError):
+        fetch_url(
+            "https://example.com/slow",
+            limits=limits,
+        )

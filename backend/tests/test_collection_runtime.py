@@ -11,6 +11,7 @@ def test_build_fetch_limits_from_settings() -> None:
         db_password="test-password",
         collection_connect_timeout_seconds=10,
         collection_read_timeout_seconds=15,
+        collection_total_timeout_seconds=60,
         collection_max_redirects=5,
         collection_max_response_bytes=5_242_880,
     )
@@ -19,5 +20,6 @@ def test_build_fetch_limits_from_settings() -> None:
 
     assert limits.connect_timeout_seconds == 10
     assert limits.read_timeout_seconds == 15
+    assert limits.total_timeout_seconds == 60
     assert limits.max_redirects == 5
     assert limits.max_response_bytes == 5_242_880

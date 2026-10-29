@@ -32,6 +32,7 @@ def test_collection_safety_defaults() -> None:
 
     assert settings.collection_connect_timeout_seconds == 10.0
     assert settings.collection_read_timeout_seconds == 15.0
+    assert settings.collection_total_timeout_seconds == 60.0
     assert settings.collection_max_redirects == 5
     assert settings.collection_max_response_bytes == 5_242_880
 
@@ -41,6 +42,7 @@ def test_collection_safety_defaults() -> None:
     [
         ("collection_connect_timeout_seconds", 0),
         ("collection_read_timeout_seconds", 0),
+        ("collection_total_timeout_seconds", 0),
         ("collection_max_redirects", -1),
         ("collection_max_response_bytes", 0),
     ],

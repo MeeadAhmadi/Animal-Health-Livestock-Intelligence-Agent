@@ -708,6 +708,7 @@ Phase 2 implemented:
 - redirect destination revalidation
 - DNS resolution validation and connection pinning
 - bounded connection/read timeouts
+- bounded total collection time budget
 - bounded redirect depth
 - bounded response size
 - environment-independent outbound HTTP behavior with `trust_env=False`
@@ -743,7 +744,7 @@ Validation confirmed:
 
 Backend:
 
-- 66 tests passed
+- 70 tests passed
 - 0 test failures
 - Ruff passed for `app`, `tests`, and `migrations`
 

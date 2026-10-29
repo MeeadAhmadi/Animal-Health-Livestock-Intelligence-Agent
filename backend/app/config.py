@@ -16,6 +16,7 @@ class Settings(BaseSettings):
 
     collection_connect_timeout_seconds: float = Field(default=10.0, gt=0)
     collection_read_timeout_seconds: float = Field(default=15.0, gt=0)
+    collection_total_timeout_seconds: float = Field(default=60.0, gt=0)
     collection_max_redirects: int = Field(default=5, ge=0)
     collection_max_response_bytes: int = Field(default=5_242_880, gt=0)
 
