@@ -7,6 +7,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 from sqlalchemy import create_engine, pool, text
 from sqlalchemy.engine import URL
 
+import app.models  # noqa: F401
 from app.db_base import APP_SCHEMA, Base
 
 BACKEND_DIR = Path(__file__).resolve().parents[1]
@@ -38,6 +39,7 @@ class MigrationSettings(BaseSettings):
 
 
 def include_name(
+
     name: str | None,
     type_: str,
     parent_names: dict[str, str | None],

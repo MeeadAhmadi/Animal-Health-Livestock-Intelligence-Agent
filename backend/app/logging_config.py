@@ -19,6 +19,21 @@ class JsonFormatter(logging.Formatter):
         if request_id is not None:
             payload["request_id"] = request_id
 
+        structured_fields = (
+            "source_id",
+            "collection_attempt_id",
+            "evidence_id",
+            "collection_status",
+            "failure_code",
+            "evidence_created",
+        )
+
+        for field_name in structured_fields:
+            value = getattr(record, field_name, None)
+
+            if value is not None:
+                payload[field_name] = value
+
         return json.dumps(payload, ensure_ascii=False)
 
 

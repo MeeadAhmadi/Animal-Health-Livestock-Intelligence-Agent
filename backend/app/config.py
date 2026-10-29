@@ -14,6 +14,12 @@ class Settings(BaseSettings):
     api_port: int = Field(default=8000, ge=1, le=65535)
     log_level: Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"] = "INFO"
 
+    collection_connect_timeout_seconds: float = Field(default=10.0, gt=0)
+    collection_read_timeout_seconds: float = Field(default=15.0, gt=0)
+    collection_total_timeout_seconds: float = Field(default=60.0, gt=0)
+    collection_max_redirects: int = Field(default=5, ge=0)
+    collection_max_response_bytes: int = Field(default=5_242_880, gt=0)
+
     db_host: str
     db_port: int = Field(default=5432, ge=1, le=65535)
     db_name: str
